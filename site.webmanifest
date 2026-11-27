@@ -1,0 +1,15 @@
+{
+  "name": "The Wedding of Alya & Rafa",
+  "short_name": "Alya & Rafa",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#320610",
+  "theme_color": "#580e1d",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
