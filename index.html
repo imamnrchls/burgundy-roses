@@ -228,7 +228,8 @@ p { margin: 0; }
   place-items: center;
   padding: max(20px, env(safe-area-inset-top, 0px)) 20px max(24px, env(safe-area-inset-bottom, 0px));
   background: var(--burgundy-night);
-  transition: transform 1.05s cubic-bezier(.72, 0, .2, 1), opacity .95s ease;
+  transition: transform .85s cubic-bezier(.72, 0, .2, 1), opacity .7s ease, visibility 0s .85s;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 .cover::before {
@@ -252,6 +253,7 @@ p { margin: 0; }
 .cover.gone {
   transform: translateY(-100%);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
@@ -266,6 +268,16 @@ p { margin: 0; }
   animation: coverIn .85s cubic-bezier(.2, .7, .2, 1) both;
 }
 .cover-photo.ph { min-height: clamp(160px, 32svh, 310px); }
+.cover-flower {
+  position: absolute;
+  z-index: 1;
+  width: clamp(62px, 15vw, 128px);
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 10px rgba(22, 2, 8, .42));
+}
+.cover-flower:first-of-type { inset: -10px auto auto -8px; transform: rotate(-27deg); }
+.cover-flower:last-of-type { inset: auto -7px -13px auto; transform: rotate(158deg); }
 .cover-details {
   padding: clamp(14px, 4vw, 34px);
   color: var(--gold-light);
@@ -473,11 +485,48 @@ p { margin: 0; }
   text-align: center;
 }
 .opening-spread { display: grid; }
-.opening-portrait.ph {
+.opening-scene {
+  position: relative;
   min-height: clamp(250px, 72vw, 470px);
-  border-radius: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+.opening-portrait.ph { position: absolute; inset: 0; }
+.opening-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(37, 7, 16, .48), transparent 38%);
+  pointer-events: none;
+}
+.opening-flowers {
+  position: absolute;
+  z-index: 1;
+  inset: auto -4% 0;
+  width: 108%;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+  transform-origin: center bottom;
+  filter: drop-shadow(0 2px 7px rgba(31, 5, 12, .28));
+}
+.opening-petals {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.opening-petals span {
+  position: absolute;
+  inset: 9% auto auto var(--left);
+  width: var(--size);
+  aspect-ratio: 1;
+  opacity: 0;
 }
 .opening-card {
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-content: center;
   justify-items: center;
@@ -486,6 +535,16 @@ p { margin: 0; }
   background: var(--paper-grain), radial-gradient(ellipse at 50% 10%, var(--ivory), var(--parchment));
   box-shadow: inset 0 0 0 1px #d5c4ae, inset 0 0 0 8px var(--ivory), inset 0 0 0 9px #d5c4ae;
 }
+.opening-card-flower {
+  position: absolute;
+  z-index: -1;
+  width: clamp(48px, 12vw, 92px);
+  height: auto;
+  opacity: .86;
+  pointer-events: none;
+}
+.opening-card-flower.left { top: 12px; left: 12px; transform: rotate(-24deg); }
+.opening-card-flower.right { right: 12px; bottom: 12px; transform: rotate(155deg); }
 .opening-card h1 {
   margin: 8px 0 10px;
   font: 400 clamp(44px, 8vw, 78px)/.96 var(--f-didone);
@@ -510,9 +569,57 @@ p { margin: 0; }
 }
 @media (min-width: 680px) {
   .opening-spread { grid-template-columns: 1fr 1fr; }
-  .opening-portrait.ph { min-height: 520px; }
+  .opening-scene { min-height: 520px; }
   .opening-card { padding-top: 28px; }
   .envelope-hero { margin-top: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body.opened .opening-portrait .ph-img {
+    animation: opening-portrait-in 1.7s .15s cubic-bezier(.19, 1, .22, 1) both;
+  }
+  body.opened .opening-flowers {
+    animation: opening-flowers-in 1.2s .38s cubic-bezier(.16, 1, .3, 1) both;
+  }
+  .opening-petals span {
+    background: url("img/rose-petals.webp") var(--petal) center / 300% 100% no-repeat;
+  }
+  body.opened .opening-petals span {
+    animation: opening-petal-drift var(--duration) var(--delay) linear both;
+  }
+  body.opened .opening-card > .envelope-hero,
+  body.opened .opening-card > .kicker,
+  body.opened .opening-card > h1,
+  body.opened .opening-card > .opening-date,
+  body.opened .opening-card > .venue-sub,
+  body.opened .opening-card > .invitation-links {
+    animation: opening-copy-in .65s var(--enter-at) cubic-bezier(.22, .68, .25, 1) both;
+  }
+  .envelope-hero { --enter-at: .62s; }
+  .opening-card .kicker { --enter-at: .78s; }
+  .opening-card h1 { --enter-at: .92s; }
+  .opening-date { --enter-at: 1.07s; }
+  .opening-card .venue-sub { --enter-at: 1.15s; }
+  .opening-card .invitation-links { --enter-at: 1.26s; }
+}
+@keyframes opening-portrait-in {
+  from { transform: scale(1.14); filter: brightness(.72); }
+  to { transform: scale(1); filter: brightness(1); }
+}
+@keyframes opening-flowers-in {
+  from { transform: translateY(25%) scale(.91); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes opening-petal-drift {
+  0% { transform: translate(0, -25px) rotate(-35deg) scaleX(.65); opacity: 0; }
+  24% { transform: translate(calc(var(--drift) * -.22), 25px) rotate(12deg); opacity: .92; }
+  52% { transform: translate(calc(var(--drift) * .6), 96px) rotate(84deg) scaleX(.68); }
+  76% { transform: translate(calc(var(--drift) * .35), 159px) rotate(132deg); opacity: .78; }
+  100% { transform: translate(var(--drift), 220px) rotate(190deg) scaleX(.65); opacity: 0; }
+}
+@keyframes opening-copy-in {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .invitation-links {
@@ -2676,6 +2783,8 @@ p { margin: 0; }
         </button>
       </div>
     </div>
+    <img class="cover-flower" src="img/botanical-sprig.webp" alt="" width="300" height="399" decoding="async">
+    <img class="cover-flower" src="img/botanical-sprig.webp" alt="" width="300" height="399" decoding="async">
   </div>
 </section>
 
@@ -2684,8 +2793,21 @@ p { margin: 0; }
 
   <section class="opening" id="opening" aria-labelledby="opening-title">
     <div class="opening-spread">
-      <div class="opening-portrait ph" role="img" aria-label="Potret mempelai" data-photo="polaroid1" data-label="Potret mempelai"></div>
+      <div class="opening-scene">
+        <div class="opening-portrait ph" role="img" aria-label="Potret mempelai" data-photo="polaroid1" data-label="Potret mempelai"></div>
+        <img class="opening-flowers" src="img/rose-foreground.webp" width="960" height="628" alt="" fetchpriority="high" decoding="async">
+        <div class="opening-petals" aria-hidden="true">
+          <span style="--left:10%;--size:17px;--petal:0%;--drift:28px;--delay:.69s;--duration:2.15s"></span>
+          <span style="--left:26%;--size:20px;--petal:50%;--drift:-32px;--delay:.97s;--duration:1.85s"></span>
+          <span style="--left:42%;--size:13px;--petal:100%;--drift:45px;--delay:.85s;--duration:2.05s"></span>
+          <span style="--left:64%;--size:16px;--petal:50%;--drift:28px;--delay:1.12s;--duration:1.95s"></span>
+          <span style="--left:78%;--size:19px;--petal:100%;--drift:-36px;--delay:.73s;--duration:2.2s"></span>
+          <span style="--left:90%;--size:15px;--petal:0%;--drift:-24px;--delay:1s;--duration:1.9s"></span>
+        </div>
+      </div>
       <div class="opening-card">
+        <img class="opening-card-flower left" src="img/botanical-sprig.webp" alt="" width="300" height="399" decoding="async">
+        <img class="opening-card-flower right" src="img/botanical-sprig.webp" alt="" width="300" height="399" decoding="async">
         <img class="envelope-hero" src="img/velvet-envelope.webp" width="800" height="602" alt="" decoding="async">
         <p class="kicker">Pernikahan</p>
         <h1 id="opening-title" tabindex="-1"><span data-bind="nickA">Alya</span> <i>&amp;</i> <span data-bind="nickB">Rafa</span></h1>
@@ -3866,15 +3988,13 @@ $("#open").addEventListener("click", () => {
   $(".rail").inert = false;
   $("#opening-title").focus({ preventScroll: true });
   $("#cover").inert = true;
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, behavior: "instant" });
   if (CONFIG.music) {
     fabMusic.hidden = false;
-    startMusic().then(() => {
-      if (CONFIG.musicTitle) toast("♪ " + CONFIG.musicTitle);
-    }).catch(() => syncMusicUI(false));
+    startMusic().catch(() => syncMusicUI(false));
   }
   setTimeout(onScroll, 200);
-});
+}, { once: true });
 
 /* =========================================================================
    SCROLL REVEAL + PROGRESS BAR + DESKTOP RAIL ACTIVE TRACKER
