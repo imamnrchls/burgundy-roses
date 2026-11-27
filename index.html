@@ -2394,6 +2394,242 @@ body.opened .envelope-hero img {
 }
 @keyframes burstOut { to { transform: translate(var(--x), var(--y)) scale(.5); opacity: 0; } }
 
+/* ==========================================================================
+   SHAPE LANGUAGE — arches, scallops, tilted notes & round forms
+   (breaks up the boxy rhythm; arch motif echoes the glasshouse venue)
+   ========================================================================== */
+
+/* Scalloped / wavy section seams */
+.sec::before, .closing::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -13px;
+  height: 14px;
+  background: var(--edge, var(--ivory));
+  -webkit-mask: radial-gradient(circle at 50% 100%, #000 68%, transparent 71%) 0 0 / 26px 14px repeat-x;
+  mask: radial-gradient(circle at 50% 100%, #000 68%, transparent 71%) 0 0 / 26px 14px repeat-x;
+  pointer-events: none;
+  z-index: 1;
+}
+.sec.parchment { --edge: var(--parchment); }
+.sec.burgundy, .closing { --edge: var(--burgundy); }
+.sec.burgundy::before, .closing::before {
+  top: -17px;
+  height: 18px;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='18' viewBox='0 0 120 18'%3E%3Cpath d='M0 10C15 10 15 2 30 2S45 10 60 10 75 2 90 2 105 10 120 10V18H0z'/%3E%3C/svg%3E") 0 0 / 120px 18px repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='18' viewBox='0 0 120 18'%3E%3Cpath d='M0 10C15 10 15 2 30 2S45 10 60 10 75 2 90 2 105 10 120 10V18H0z'/%3E%3C/svg%3E") 0 0 / 120px 18px repeat-x;
+}
+.closing::before { background: #560d1c; }
+
+/* Save the date — arched window card, wax seal on the crown */
+.std-card {
+  border-radius: 50% 50% 6px 6px / 170px 170px 6px 6px;
+  padding: 12px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, .12), transparent 60%),
+    linear-gradient(180deg, var(--olive-soft), var(--olive) 40%, var(--olive-deep));
+}
+.std-inner {
+  border-radius: 50% 50% 3px 3px / 160px 160px 3px 3px;
+  padding-top: 70px;
+}
+.std-card .wax-seal { top: -16px; }
+
+/* Countdown — round medallions instead of tiles */
+.countdown-row { align-items: center; }
+.cd-unit {
+  width: clamp(62px, 17vw, 76px);
+  min-width: 0;
+  aspect-ratio: 1;
+  padding: 0;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, #fffdf9, var(--ivory) 60%, #f1e8da);
+  border: 1px solid rgba(196, 161, 104, .55);
+  box-shadow: 0 0 0 4px var(--parchment), 0 0 0 5px rgba(196, 161, 104, .3), 0 10px 22px rgba(44, 18, 22, .08);
+}
+.cd-unit b { font-size: clamp(24px, 7vw, 30px); }
+.cd-unit small { margin-top: 3px; font-size: 7.5px; letter-spacing: .18em; }
+.cd-unit.sec-u {
+  background: radial-gradient(circle at 35% 28%, #7d1a2f, var(--burgundy) 60%, var(--burgundy-deep));
+  border-color: var(--gold);
+}
+.cd-unit.sec-u b { color: #fff6ea; }
+.cd-unit.sec-u small { color: var(--gold-light); }
+.cd-sep { display: none; }
+.countdown-row { gap: clamp(6px, 2.4vw, 12px); }
+
+/* Couple — die-cut place cards with scalloped crown & foot, oval locket mat */
+#couple { filter: drop-shadow(0 20px 26px rgba(14, 2, 5, .45)); }
+.cameo-card {
+  box-shadow: none;
+  border: 0;
+  border-radius: 0;
+  padding: 36px 24px 34px;
+  -webkit-mask:
+    radial-gradient(circle at 50% 100%, #000 68%, transparent 71%) 0 0 / 24px 12px repeat-x,
+    linear-gradient(#000 0 0) 0 11px / 100% calc(100% - 22px) no-repeat,
+    radial-gradient(circle at 50% 0%, #000 68%, transparent 71%) 0 100% / 24px 12px repeat-x;
+  mask:
+    radial-gradient(circle at 50% 100%, #000 68%, transparent 71%) 0 0 / 24px 12px repeat-x,
+    linear-gradient(#000 0 0) 0 11px / 100% calc(100% - 22px) no-repeat,
+    radial-gradient(circle at 50% 0%, #000 68%, transparent 71%) 0 100% / 24px 12px repeat-x;
+}
+.cameo-card::before {
+  inset: 22px 12px;
+  border-radius: 50% 50% 10px 10px / 150px 150px 10px 10px;
+  border-color: rgba(196, 161, 104, .5);
+}
+.cameo-mat {
+  width: 200px;
+  padding: 12px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, .14), transparent 55%),
+    linear-gradient(155deg, var(--burgundy-mid), var(--burgundy-deep));
+  box-shadow: 0 14px 28px rgba(48, 8, 16, .28), inset 0 0 0 1px rgba(234, 219, 195, .2);
+}
+.cameo-mat::after { inset: 5px; border-radius: 50%; border-style: dashed; }
+.cameo-oval { border-radius: 50%; }
+
+/* Love story — tilted keepsake notes with washi tape */
+.chapter {
+  border-radius: 3px 14px 3px 14px;
+  border-top-width: 1px;
+  border-top-color: var(--linen);
+  transform: rotate(-.8deg);
+}
+.chapter:nth-child(even) { transform: rotate(.9deg); }
+.chapter:hover { transform: rotate(0) translateY(-3px); }
+.chapter::after {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 70px;
+  height: 18px;
+  margin-left: -35px;
+  transform: rotate(-3deg);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .25) 0 4px, transparent 4px 8px),
+    rgba(214, 174, 181, .62);
+  box-shadow: 0 1px 2px rgba(44, 18, 22, .08);
+  -webkit-mask: linear-gradient(90deg, transparent 0 2px, #000 2px calc(100% - 2px), transparent 0);
+}
+.chapter:nth-child(even)::after { transform: rotate(4deg); background-color: rgba(196, 161, 104, .5); left: 62%; }
+.chapter:nth-child(3n)::after { background-color: rgba(123, 134, 108, .45); left: 38%; }
+
+/* Events — arched glasshouse card */
+.ornate-card {
+  border-radius: 50% 50% 8px 8px / 170px 170px 8px 8px;
+  padding-top: 76px;
+}
+.ornate-card .corner-filigree.tl, .ornate-card .corner-filigree.tr { display: none; }
+.ornate-card::before {
+  content: "";
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Cg fill='%23c4a168'%3E%3Cellipse cx='17' cy='9' rx='4' ry='7'/%3E%3Cellipse cx='17' cy='25' rx='4' ry='7'/%3E%3Cellipse cx='9' cy='17' rx='7' ry='4'/%3E%3Cellipse cx='25' cy='17' rx='7' ry='4'/%3E%3C/g%3E%3Ccircle cx='17' cy='17' r='3.2' fill='%23580e1d'/%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: .9;
+}
+.ornate-micro { margin-top: 10px; }
+.event-item .ev-time { border-radius: 99px; }
+.stream-card { border-radius: 50% 50% 6px 6px / 140px 140px 6px 6px; padding-top: 52px; }
+
+/* Dress code — botanical leaf-cut card + fabric-dot swatches */
+.dress-card { border-radius: 90px 8px 90px 8px; }
+.dress-card .corner-filigree.tl, .dress-card .corner-filigree.br { display: none; }
+.swatches { gap: 12px; max-width: 280px; }
+.swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid #fffdf9;
+  box-shadow: 0 0 0 1px rgba(44, 28, 30, .14), 0 6px 14px rgba(44, 18, 22, .16), inset 0 -6px 10px rgba(0, 0, 0, .12), inset 0 4px 8px rgba(255, 255, 255, .2);
+}
+.swatch.picked { outline-offset: 2px; outline-width: 1.5px; }
+
+/* Gallery — scattered prints with arch & oval cut mats */
+.gallery-grid { gap: 14px 12px; padding: 4px 2px; }
+.gal-item { transform: rotate(-1.1deg); }
+.gal-item:nth-child(even) { transform: rotate(1.2deg); }
+.gal-item.wide { transform: rotate(-.5deg); }
+.gal-item:hover { transform: rotate(0) translateY(-4px); }
+.gal-item.arch { border-radius: 50% 50% 4px 4px / 120px 120px 4px 4px; padding-top: 8px; }
+.gal-item.arch .ph { border-radius: 50% 50% 2px 2px / 110px 110px 2px 2px; }
+.gal-item.oval .ph { border-radius: 50%; }
+.gal-item.oval { padding: 10px 10px 20px; }
+.gal-item.wide .ph { border-radius: 2px; }
+
+/* Gift — keep cards, soften drawer rhythm */
+.bank-card { border-radius: 18px; }
+
+/* RSVP — rounded, softer controls */
+.rsvp-form input[type="text"], .rsvp-form textarea { border-radius: 16px; }
+.att-pill { border-radius: 999px; }
+.g-chip { width: 42px; min-width: 0; height: 42px; padding: 0; border-radius: 50%; }
+.submit-btn { border-radius: 999px; }
+
+/* Guestbook — letter bubbles */
+.wish-item {
+  border-radius: 20px 20px 20px 6px;
+  background: linear-gradient(180deg, #fff, #fffaf4);
+}
+.wish-item::before { display: none; }
+.wish-av {
+  border-radius: 48% 52% 46% 54% / 52% 48% 54% 46%;
+  background: radial-gradient(circle at 32% 28%, #9b1d32, #6b0f20 50%, #3c0610);
+  box-shadow: inset 0 1px 3px rgba(255, 200, 205, .35), 0 3px 8px rgba(40, 6, 12, .3);
+}
+.wish-empty { border-radius: 50% 50% 18px 18px / 120px 120px 18px 18px; padding-top: 34px; }
+
+/* Closing — arched frame & arched filmstrip prints */
+.closing-frame > .booklet-corners:first-child { justify-content: center; gap: 16px; }
+.closing-frame > .booklet-corners:last-child { justify-content: center; gap: 16px; }
+.closing-frame { border-radius: 50% 50% 10px 10px / 180px 180px 10px 10px; padding-top: 54px; }
+.filmstrip .ph { border-radius: 50% 50% 4px 4px / 80px 80px 4px 4px; }
+.filmstrip { padding-top: 8px; }
+
+/* Lembar Kabar credit */
+.made-by {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 18px;
+  padding: 14px 22px 13px;
+  max-width: 320px;
+  border-radius: 999px;
+  border: 1px solid rgba(234, 219, 195, .2);
+  background: rgba(255, 255, 255, .04);
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.5;
+  letter-spacing: .01em;
+  color: rgba(234, 219, 195, .78);
+}
+.made-by a {
+  font-family: var(--f-didone);
+  font-style: normal;
+  font-size: 12px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(196, 161, 104, .4);
+  padding-bottom: 1px;
+  transition: color .2s, border-color .2s;
+}
+.made-by a:hover { color: #fff6ea; border-color: #fff6ea; }
+
 /* Scroll Reveal */
 .rv {
   transition: opacity .85s ease, transform .9s cubic-bezier(.2, .7, .2, 1);
@@ -2800,7 +3036,10 @@ body.opened .envelope-hero img {
     </div>
 
     <div class="site-footer">
-      <p>Burgundy Roses · Crafted with Love</p>
+      <p class="made-by">
+        <span>Dirangkai dengan sepenuh hati dan ikut berbahagia bersama kalian, oleh</span>
+        <a href="https://lembarkabar.web.id" target="_blank" rel="noopener">Lembar Kabar</a>
+      </p>
     </div>
   </footer>
 </main>
@@ -3282,13 +3521,14 @@ function openLightbox(startItem, opener) {
   });
 }
 
-let gCol = 0;
+let gCol = 0, gShape = 0;
 CONFIG.gallery.forEach((item, i) => {
   let wide = !!(item && item.wide);
   if (!wide && gCol === 0 && i === CONFIG.gallery.length - 1) wide = true;
   gCol = wide ? 0 : (gCol + 1) % 2;
 
-  const btn = el("button", "gal-item rv" + (wide ? " wide" : ""));
+  const shape = wide ? " wide" : (gShape++ % 2 ? " oval" : " arch");
+  const btn = el("button", "gal-item rv" + shape);
   btn.type = "button";
   btn.setAttribute("aria-label", (item && item.caption) || `Lihat foto ${i + 1}`);
   btn.append(ph(`Foto ${i + 1}`, item), el("span", null, (item && item.caption) || `Momen ${i + 1}`));
